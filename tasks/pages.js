@@ -717,6 +717,14 @@ module.exports = function (grunt) {
 
       grunt.log.debug(JSON.stringify(lib.reducePostContent(templateRenderData), null, '  '));
       try {
+        if (!page.url) {
+          var lastSlash = listPage.lastIndexOf("/");
+          var file = listPage.substring(lastSlash + 1);
+
+          if (file.indexOf(".jade")) {
+            page.url = file.substring(0, file.length - 5) + ".html";
+          }
+        }
         grunt.file.write(lib.getDestFromUrl(page.url), fn(templateRenderData));
       } catch (e) {
         console.log('\nData passed to ' + listPage.magenta + ' paginated list page template:\n\n' + JSON.stringify(lib.reducePostContent(templateData), null, '  ').yellow + '\n');
